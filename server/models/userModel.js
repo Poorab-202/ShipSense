@@ -1,25 +1,18 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-const userSchema = new mongoose.Schema(
-    {
-        name: { type: String, required: true, trim: true },
-        email: { type: String, required: true, unique: true, lowercase: true },
-        password: { type: String, required: true },
-        contactNumber: { type: String },
-        address: {
-            street: String,
-            city: String,
-            state: String,
-            postalCode: String,
-            country: { type: String, default: "India" },
-        },
-        role: {
-            type: String,
-            enum: ["Admin", "LogisticsManager", "DeliveryAgent", "Customer"],
-            default: "Customer",
-        },
-    },
+
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    password: { type: String, required: true },
+    contactNumber: { type: String },
+    role: {
+        type: String,
+        enum: ["Admin", "Manager", "WarehouseStaff"],
+        default: "WarehouseStaff"
+    }
+},
     { timestamps: true }
 );
 
