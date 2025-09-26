@@ -35,10 +35,10 @@ export default function Login() {
         <div className="flex min-h-screen bg-gray-100">
             <div className="hidden md:flex flex-col justify-between bg-gray-900 text-white w-1/2 p-6 relative">
                 <div className="absolute top-4 left-6">
-                    <img src="public\logo.jpg" alt="Logo" className="h-10" />
+                    <img src="logo.jpg" alt="Logo" className="h-10" />
                 </div>
                 <div className="flex items-center justify-center h-full">
-                    <img src="public\login-banner.jpg" alt="Logistics" className="max-h-[400px] object-contain rounded-2xl" />
+                    <img src="login-banner.jpg" alt="Logistics" className="max-h-[400px] object-contain rounded-2xl" />
                 </div>
                 <div className="text-center pb-6">
                     <h2 className="text-lg font-semibold">Campus Express</h2>

@@ -1,21 +1,51 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const warehouseSchema = new mongoose.Schema(
     {
-        name: { type: String, required: true },
-        capacity: { type: Number, required: true },
-        currentLoad: { type: Number, default: 0 },
-        address: {
-            street: String,
-            city: String,
-            state: String,
-            postalCode: String,
-            country: { type: String, default: "India" },
+        name: {
+            type: String,
+            required: true,
+            trim: true,
         },
-        manager: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        location: {
+            address: { type: String, required: true },
+            city: { type: String },
+            state: { type: String },
+            country: { type: String },
+            coordinates: {
+                lat: { type: Number, required: true },
+                lng: { type: Number, required: true }
+            }
+        },
+        capacity: {
+            type: Number, // total capacity (e.g., in pallets, units, or cubic meters)
+            required: true,
+            min: 0,
+        },
+        usedCapacity: {
+            type: Number, // how much is currently used
+            default: 0,
+            min: 0,
+        },
+        inventory: [
+            {
+                itemName: { type: String, required: true },
+                quantity: { type: Number, required: true, min: 0 },
+                unit: { type: String, default: "units" }, // e.g., boxes, pallets, kg
+            },
+        ],
+        manager: {
+            name: { type: String },
+            contact: { type: String },
+            email: { type: String },
+        },
+        status: {
+            type: String,
+            enum: ["Nearly Empty", "Normal", "Nearing Full", "Full"],
+            default: "Normal",
+        },
     },
     { timestamps: true }
 );
 
-const Warehouse = mongoose.model("Warehouse", warehouseSchema);
-export default Warehouse;
+export default mongoose.model("Warehouse", warehouseSchema);

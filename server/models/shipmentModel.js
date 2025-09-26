@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const packageSchema = new mongoose.Schema(
+const shipmentSchema = new mongoose.Schema(
     {
         trackingId: {
             type: String,
@@ -37,6 +37,6 @@ const packageSchema = new mongoose.Schema(
 );
 
 
-const Package = mongoose.model('Package', packageSchema)
+const Shipment = mongoose.model('Package', shipmentSchema)
 
-export default Package;
+export default Shipment;

@@ -19,7 +19,7 @@ function Navbar() {
                     <PopoverTrigger asChild>
                         <Button variant="ghost" className="p-0 rounded-full">
                             <Avatar>
-                                <AvatarImage src="public\profile.png" alt="Profile" />
+                                <AvatarImage src="profile.png" alt="Profile" />
                                 <AvatarFallback className="text-black">U</AvatarFallback>
                             </Avatar>
                         </Button>
