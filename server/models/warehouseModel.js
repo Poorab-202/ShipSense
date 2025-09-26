@@ -35,10 +35,13 @@ const warehouseSchema = new mongoose.Schema(
             },
         ],
         manager: {
-            name: { type: String },
-            contact: { type: String },
-            email: { type: String },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         },
+        staff: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }],
         status: {
             type: String,
             enum: ["Nearly Empty", "Normal", "Nearing Full", "Full"],

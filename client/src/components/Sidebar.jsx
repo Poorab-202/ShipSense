@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import { Home, Package, Truck, Settings } from "lucide-react"; // icon set
+import { Home, Package, Truck, Settings, Building2 } from "lucide-react"; // icon set
 
 export default function Sidebar() {
   const navItems = [
     { to: "/", label: "Dashboard", icon: <Home size={20} /> },
     { to: "/shipment", label: "Shipments", icon: <Truck size={20} /> },
-    { to: "/fleet", label: "Inventory", icon: <Package size={20} /> },
-    { to: "/warehouse", label: "Warehouse", icon: <Settings size={20} /> },
+    { to: "/inventory", label: "Inventory", icon: <Package size={20} /> },
+    { to: "/warehouse", label: "Warehouse", icon: <Building2 size={20} /> },
+    { to: "/users", label: "Users", icon: <Settings size={20} /> },
   ];
 
   return (

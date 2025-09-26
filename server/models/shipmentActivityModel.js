@@ -1,12 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const shipmentActivitySchema = new mongoose.Schema(
   {
-    package: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Package",
-      required: true,
-    },
+    shipment: { type: mongoose.Schema.Types.ObjectId, ref: "Shipment", required: true },
     status: {
       type: String,
       enum: [
@@ -21,21 +17,12 @@ const shipmentActivitySchema = new mongoose.Schema(
       ],
       required: true,
     },
-    location: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Location",
-    },
-    updatedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", 
-    },
-    timestamp: {
-      type: Date,
-      default: Date.now,
-    },
+    location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     remarks: { type: String },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("ShipmentActivity", shipmentActivitySchema);
+const ShipmentActivity = mongoose.model("ShipmentActivity", shipmentActivitySchema);
+export default ShipmentActivity;

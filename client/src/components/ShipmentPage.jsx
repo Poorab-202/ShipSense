@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Link, useNavigate } from "react-router-dom";
-import { EllipsisIcon } from 'lucide-react';
 
 export default function ShipmentsPage() {
   const [shipments, setShipments] = useState([]);
@@ -21,123 +20,7 @@ export default function ShipmentsPage() {
   useEffect(() => {
     const fetchShipments = async () => {
       try {
-        // const res = await axios.get("/api/shipment/all");
-        const res = [
-          {
-            "_id": "651234abcd001",
-            "trackingID": "TRK1001",
-            "status": "Picked Up",
-            "weight": 12.5,
-            "height": 40,
-            "width": 30,
-            "length": 50,
-            "description": "Electronic items - Laptop and accessories",
-            "pickupDate": "2025-09-26",
-            "expectedDate": "2025-10-01",
-            "sender": {
-              "name": "Ramesh Kumar",
-              "email": "ramesh@example.com",
-              "street": "12 MG Road",
-              "city": "Bengaluru",
-              "state": "Karnataka",
-              "postalCode": "560001",
-              "country": "India",
-              "contact": "+91-9876543210",
-              "alternateContact": "+91-9123456789",
-              "idType": "Aadhar",
-              "idNumber": "1234-5678-9012"
-            },
-            "recipient": {
-              "name": "Anjali Sharma",
-              "email": "anjali@example.com",
-              "street": "45 Civil Lines",
-              "city": "Delhi",
-              "state": "Delhi",
-              "postalCode": "110054",
-              "country": "India",
-              "contact": "+91-9988776655",
-              "alternateContact": "",
-              "idType": "Passport",
-              "idNumber": "N1234567"
-            }
-          },
-          {
-            "_id": "651234abcd002",
-            "status": "In Transit",
-            "trackingID": "TRK1002",
-            "weight": 5.2,
-            "height": 20,
-            "width": 15,
-            "length": 25,
-            "description": "Documents and Books",
-            "pickupDate": "2025-09-25",
-            "expectedDate": "2025-09-30",
-            "sender": {
-              "name": "Suresh Mehta",
-              "email": "suresh@example.com",
-              "street": "88 Park Street",
-              "city": "Kolkata",
-              "state": "West Bengal",
-              "postalCode": "700016",
-              "country": "India",
-              "contact": "+91-9812345678",
-              "alternateContact": "",
-              "idType": "DriverLicense",
-              "idNumber": "WB-0923456"
-            },
-            "recipient": {
-              "name": "Priya Nair",
-              "email": "priya@example.com",
-              "street": "67 Marine Drive",
-              "city": "Mumbai",
-              "state": "Maharashtra",
-              "postalCode": "400002",
-              "country": "India",
-              "contact": "+91-9023456789",
-              "alternateContact": "",
-              "idType": "Aadhar",
-              "idNumber": "9876-5432-1098"
-            }
-          },
-          {
-            "_id": "651234abcd003",
-            "status": "Delivered",
-            "trackingID": "TRK1003",
-            "weight": 25,
-            "height": 60,
-            "width": 40,
-            "length": 70,
-            "description": "Furniture - Wooden Chair",
-            "pickupDate": "2025-09-27",
-            "expectedDate": "2025-10-02",
-            "sender": {
-              "name": "Vikram Singh",
-              "email": "vikram@example.com",
-              "street": "22 GT Road",
-              "city": "Amritsar",
-              "state": "Punjab",
-              "postalCode": "143001",
-              "country": "India",
-              "contact": "+91-9955667788",
-              "alternateContact": "",
-              "idType": "Other",
-              "idNumber": "FURN12345"
-            },
-            "recipient": {
-              "name": "Rohit Verma",
-              "email": "rohit@example.com",
-              "street": "9 Connaught Place",
-              "city": "Delhi",
-              "state": "Delhi",
-              "postalCode": "110001",
-              "country": "India",
-              "contact": "+91-9011223344",
-              "alternateContact": "+91-9090909090",
-              "idType": "Passport",
-              "idNumber": "M7654321"
-            }
-          }
-        ]
+       const res = await axios.get("/api/shipment/all");
         setShipments(res);
       } catch (err) {
         console.error("Error fetching shipments", err);

@@ -152,6 +152,7 @@ export default function WarehouseDetails() {
                             <TableHead>Used</TableHead>
                             <TableHead>Available</TableHead>
                             <TableHead>Status</TableHead>
+                            <TableHead>Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -188,6 +189,7 @@ export default function WarehouseDetails() {
                                             {status}
                                         </span>
                                     </TableCell>
+                                     <TableCell><Link to="/warehouse/1234"><Button>View</Button></Link></TableCell>
                                 </TableRow>
                             );
                         })}

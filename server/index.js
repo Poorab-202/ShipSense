@@ -4,6 +4,7 @@ import cors from 'cors';
 import connectDB from './utils/connectDB.js';
 import dotenv from 'dotenv';
 import UniqueIdGenerator from './utils/uniqueIdGenerator.js';
+import ShipmentRoutes from "./routes/shipmentRoutes.js"
 
 dotenv.config();
 
@@ -20,20 +21,8 @@ app.use(cors(corsOptions));
 
 await connectDB();
 
-app.get("/getTrackingId", async (req, res) => {
-    try {
-        const trackingId = await UniqueIdGenerator();
-        res.status(200).json({
-            trackingId: trackingId,
-            success: true
-        })
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            success: false
-        })
-    }
-})
+
+app.use(ShipmentRoutes);
 
 
 const PORT = process.env.PORT || 3000;

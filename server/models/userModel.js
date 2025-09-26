@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
@@ -11,11 +10,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["Admin", "Manager", "WarehouseStaff"],
         default: "WarehouseStaff"
+    },
+    status: {
+        type: String,
+        enum: ["Active", "Inactive"],
+        default: "Active"
+    },
+    warehouse: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Warehouse",
+        default: null
+    },
+    lastLogin: {
+        type: Date
     }
-},
-    { timestamps: true }
-);
-
+}, { timestamps: true });
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);

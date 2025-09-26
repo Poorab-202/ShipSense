@@ -11,6 +11,11 @@ import ShipmentDetailsPage from './components/ShipmentDetailsPage';
 import WarehousePage from './components/WarehousePage';
 import AddWarehouse from './components/admin/AddWarehouse';
 import WarehouseDetails from './components/admin/WarehouseDetails';
+import SingleWarehouse from './components/admin/SingleWarehouse';
+import UserManagement from './components/admin/UserManagement';
+import AddUser from './components/admin/AddUser';
+import InventoryPage from './components/InventoryPage';
+import AddInventory from './components/admin/AddInventory';
 
 const appRouter = createBrowserRouter([
   {
@@ -41,7 +46,23 @@ const appRouter = createBrowserRouter([
         {
           path: "/warehouse/add",
           element: <AddWarehouse></AddWarehouse>
-        }
+        },
+        {
+          path: "/warehouse/:id",
+          element: <SingleWarehouse></SingleWarehouse>
+        },
+        {
+          path: "/users",
+          element: <UserManagement></UserManagement>
+        },
+        {
+          path: "/users/add",
+          element: <AddUser></AddUser>
+        },
+        {
+          path: "/inventory",
+          element: <AddInventory></AddInventory> 
+        },
       ]
   },
   {

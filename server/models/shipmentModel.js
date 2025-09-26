@@ -1,42 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const shipmentSchema = new mongoose.Schema(
-    {
-        trackingId: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        description: { type: String },
-        weight: { type: Number },
-        dimensions: {
-            length: Number,
-            width: Number,
-            height: Number,
-        },
-        activity: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "ShipmentActivity"
-        },
-        sender: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
-        recipient: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
-
-        pickupDate: { type: Date },
-        expectedDeliveryDate: { type: Date },
-        deliveryDate: { type: Date },
+  {
+    trackingId: { type: String, required: true, unique: true },
+    description: { type: String },
+    weight: { type: Number },
+    dimensions: {
+      length: Number,
+      width: Number,
+      height: Number,
     },
-    { timestamps: true }
+    activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "ShipmentActivity" }], // timeline
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: "Client", required: true },
+    recipient: { type: mongoose.Schema.Types.ObjectId, ref: "Client", required: true },
+    pickupDate: { type: Date },
+    expectedDeliveryDate: { type: Date },
+    deliveryDate: { type: Date },
+  },
+  { timestamps: true }
 );
 
-
-const Shipment = mongoose.model('Package', shipmentSchema)
-
+const Shipment = mongoose.model("Shipment", shipmentSchema);
 export default Shipment;
