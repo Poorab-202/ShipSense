@@ -115,7 +115,7 @@ export default function Login() {
                                 <p>
                                     Don&apos;t have an account?
                                     <a
-                                        href="/signup"
+                                        href="/sign"
                                         className="text-[#6F00FF] hover:underline ml-1"
                                     >
                                         Sign up
