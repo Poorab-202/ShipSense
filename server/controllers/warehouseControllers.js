@@ -5,7 +5,7 @@ export const addWarehouse = async (req, res) => {
     try {
         const { name, location, capacity, manager } = req.body;
 
-        // 1. Create warehouse
+        
         const warehouse = new Warehouse({
             name,
             location,
@@ -14,7 +14,7 @@ export const addWarehouse = async (req, res) => {
         });
         await warehouse.save();
 
-        // 2. Update Manager user → assign this warehouse
+   
         if (manager) {
             await User.findByIdAndUpdate(manager, { warehouse: warehouse._id });
         }
@@ -26,7 +26,7 @@ export const addWarehouse = async (req, res) => {
 };
 
 
-// ➤ Get all warehouses
+
 export const getWarehouses = async (req, res) => {
     try {
         const warehouses = await Warehouse.find()
@@ -38,7 +38,7 @@ export const getWarehouses = async (req, res) => {
     }
 };
 
-// ➤ Get single warehouse
+
 export const getWarehouseById = async (req, res) => {
     try {
         const warehouse = await Warehouse.findById(req.params.id)
@@ -57,7 +57,7 @@ export const getWarehouseById = async (req, res) => {
     }
 };
 
-// ➤ Update warehouse
+
 export const updateWarehouse = async (req, res) => {
     try {
         const warehouse = await Warehouse.findByIdAndUpdate(
@@ -96,16 +96,16 @@ export const assignUserToWarehouse = async (req, res) => {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // Update the user’s warehouse reference
+        
         user.warehouse = warehouse._id;
         await user.save();
 
-        // If manager, set directly
+       
         if (role === "Manager") {
             warehouse.manager = user._id;
         }
 
-        // If staff, push to staff array
+     
         if (role === "WarehouseStaff") {
             if (!warehouse.staff.includes(user._id)) {
                 warehouse.staff.push(user._id);
@@ -125,7 +125,7 @@ export const assignUserToWarehouse = async (req, res) => {
     }
 };
 
-// ➤ Delete warehouse
+
 export const deleteWarehouse = async (req, res) => {
     try {
         const warehouse = await Warehouse.findByIdAndDelete(req.params.id);
@@ -142,7 +142,7 @@ export const deleteWarehouse = async (req, res) => {
     }
 };
 
-// ➤ Get stats
+
 export const getWarehouseStats = async (req, res) => {
     try {
         const warehouses = await Warehouse.find();

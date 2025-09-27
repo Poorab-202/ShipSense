@@ -72,7 +72,7 @@ export default function WarehouseDetails() {
   );
 
   return (
-    <div className="p-6 w-full bg-white min-h-screen">
+    <div className="w-full min-h-full bg-white rounded-xl shadow p-6">
       {/* Add Warehouse Button */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-[#3B0270]">Warehouses</h1>

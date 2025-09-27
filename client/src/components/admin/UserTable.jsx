@@ -68,7 +68,7 @@ export default function UserTable() {
     if(users?.length===0) return (<p>Loading...</p>)
 
   return (
-    <div className="p-6 w-full bg-white min-h-screen">
+    <div className="w-full min-h-full bg-white rounded-xl shadow p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-[#3B0270]">User Management</h1>

@@ -3,7 +3,7 @@ import TotalShipments from "./admin/TotalShipments";
 
 function DashboardPage() {
     return (
-        <div className="flex flex-col gap-5 overflow-y-auto">
+        <div className="w-full min-h-full bg-white rounded-xl shadow p-6 flex flex-col gap-6">
             <TotalShipments></TotalShipments>
             <TodaysShipments></TodaysShipments>
         </div>

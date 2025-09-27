@@ -56,7 +56,7 @@ export default function ShipmentsPage() {
   });
 
   return (
-    <div className="w-252 p-6 bg-white min-h-screen">
+    <div className="w-full min-h-full bg-white rounded-xl shadow p-6">
       {/* Top bar */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-[#3B0270]">Shipments</h1>

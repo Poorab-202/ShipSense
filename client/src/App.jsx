@@ -17,6 +17,7 @@ import AddUser from './components/admin/AddUser';
 import InventoryPage from './components/InventoryPage';
 import AddInventory from './components/admin/AddInventory';
 import { Toaster } from 'sonner';
+import Signup from './components/auth/Signup';
 
 
 const appRouter = createBrowserRouter([
@@ -63,13 +64,17 @@ const appRouter = createBrowserRouter([
         },
         {
           path: "/inventory",
-          element: <AddInventory></AddInventory> 
+          element: <AddInventory></AddInventory>
         },
       ]
   },
   {
     path: "/login",
     element: <Login></Login>
+  },
+  {
+    path: "/signup",
+    element: <Signup></Signup>
   }
 ])
 

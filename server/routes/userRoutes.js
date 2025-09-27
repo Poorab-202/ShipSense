@@ -11,15 +11,13 @@ import {
 
 const router = express.Router();
 
-// 🔹 User CRUD
-router.post("/add", createUser);         // Create new user
-router.get("/managers", getManagers);
-router.get("/", getUsers);               // Get all users
-router.get("/:id", getUserById);         // Get single user
-router.put("/:id", updateUser);          // Update user
-router.delete("/:id", deleteUser);       // Delete user
 
-// 🔹 Auth
-router.post("/login", loginUser);        // Login user
+router.post("/add", createUser);         
+router.get("/managers", getManagers);
+router.get("/", getUsers);              
+router.get("/:id", getUserById);        
+router.put("/:id", updateUser);         
+router.delete("/:id", deleteUser);      
+router.post("/login", loginUser);        
 
 export default router;

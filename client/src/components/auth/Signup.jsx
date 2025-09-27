@@ -4,36 +4,41 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { BASE_URL } from "@/config/api"; // ✅ use BASE_URL instead of hardcoding
+import { BASE_URL } from "@/config/api";
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Signup() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    contactNumber: "",
+  });
+
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
 
     try {
-      const response = await axios.post(`${BASE_URL}/auth/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(`${BASE_URL}/auth/register`, formData);
 
-      console.log("Login success:", response.data);
-
-      // ✅ For now, just save the token to localStorage
-      if (response.data?.token) {
-        localStorage.setItem("token", response.data.token);
+      if (response.data.success) {
+        toast.success("Signup successful! Please login.");
+        navigate("/login"); // ✅ redirect after signup
+      } else {
+        toast.error(response.data.message || "Signup failed");
       }
-
-   
-      window.location.href = "/";
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      toast.error(err.response?.data?.message || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -58,27 +63,39 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Login form */}
+      {/* Signup form */}
       <div className="flex items-center justify-center w-full md:w-1/2 p-4">
         <Card className="w-full max-w-md shadow-xl rounded-2xl">
           <CardHeader>
             <CardTitle className="text-[#3B0270] text-center text-2xl font-bold">
-              Welcome back!
+              Create an account
             </CardTitle>
             <p className="text-[#3B0270] text-center text-sm mt-1">
-              Sign in to manage your logistics
+              Sign up to manage your logistics
             </p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your name"
+                  value={formData.name}
+                  onChange={(e) => handleChange("name", e.target.value)}
+                  required
+                />
+              </div>
+
               <div>
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={(e) => handleChange("email", e.target.value)}
                   required
                 />
               </div>
@@ -89,40 +106,41 @@ export default function Login() {
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={(e) => handleChange("password", e.target.value)}
                   required
                 />
               </div>
 
-              {error && (
-                <p className="text-red-500 text-sm text-center">{error}</p>
-              )}
+              <div>
+                <Label htmlFor="contactNumber">Contact Number</Label>
+                <Input
+                  id="contactNumber"
+                  type="text"
+                  placeholder="Enter your contact number"
+                  value={formData.contactNumber}
+                  onChange={(e) => handleChange("contactNumber", e.target.value)}
+                />
+              </div>
 
               <Button
                 type="submit"
                 className="w-full bg-[#6F00FF] hover:bg-[#3B0270] cursor-pointer"
                 disabled={loading}
               >
-                {loading ? "Logging in..." : "Login"}
+                {loading ? "Signing up..." : "Sign Up"}
               </Button>
 
               <div className="flex justify-between text-sm mt-2">
                 <p>
-                  Don&apos;t have an account?
-                  <a
-                    href="/signup"
+                  Already have an account?
+                  <Link
+                    to="/login"
                     className="text-[#6F00FF] hover:underline ml-1"
                   >
-                    Sign up
-                  </a>
+                    Login
+                  </Link>
                 </p>
-                <a
-                  href="/forgot-password"
-                  className="text-[#6F00FF] hover:underline"
-                >
-                  Forgot password?
-                </a>
               </div>
             </form>
           </CardContent>

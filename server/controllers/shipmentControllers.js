@@ -24,7 +24,7 @@ export const addShipment = async (req, res) => {
     try {
         const { trackingId, description, weight, dimensions, pickupDate, sender, recipient } = req.body;
 
-        // Map sender
+
         const senderClient = new Client({
             name: sender.name,
             email: sender.email,
@@ -42,7 +42,7 @@ export const addShipment = async (req, res) => {
         });
         await senderClient.save();
 
-        // Map recipient
+
         const recipientClient = new Client({
             name: recipient.name,
             email: recipient.email,
@@ -60,12 +60,12 @@ export const addShipment = async (req, res) => {
         });
         await recipientClient.save();
 
-        // Expected delivery date
+     
         const expectedDeliveryDate = pickupDate
             ? new Date(new Date(pickupDate).setDate(new Date(pickupDate).getDate() + 5))
             : null;
 
-        // Save shipment
+
         const shipment = new Shipment({
             trackingId,
             description,
@@ -78,7 +78,7 @@ export const addShipment = async (req, res) => {
         });
         await shipment.save();
 
-        // First activity
+ 
         const activity = new ShipmentActivity({
             shipment: shipment._id,
             status: "Pending Pickup",
@@ -111,20 +111,20 @@ export const getShipments = async (req, res) => {
 
 
 export const getShipmentById = async (req, res) => {
-  try {
-    const shipment = await Shipment.findById(req.params.id)
-      .populate("sender")      // 👈 fetch full client object
-      .populate("recipient")   // 👈 fetch full client object
-      .populate("activities"); // optional if you want full activity details
+    try {
+        const shipment = await Shipment.findById(req.params.id)
+            .populate("sender")     
+            .populate("recipient")   
+            .populate("activities"); 
 
-    if (!shipment) {
-      return res.status(404).json({ success: false, message: "Shipment not found" });
+        if (!shipment) {
+            return res.status(404).json({ success: false, message: "Shipment not found" });
+        }
+
+        res.status(200).json({ success: true, data: shipment });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
     }
-
-    res.status(200).json({ success: true, data: shipment });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
 };
 
 

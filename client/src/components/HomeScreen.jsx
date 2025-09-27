@@ -1,24 +1,30 @@
-import { Outlet } from "react-router-dom";
-import AddShipment from "./AddShipment";
 import Navbar from "./shared/Navbar";
-import ShipmentsPage from "./ShipmentPage";
 import Sidebar from "./Sidebar";
 import Footer from "./shared/Footer";
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
-function HomeScreen() {
-    return (
-        <>
-            <Navbar></Navbar>
-            <div className="flex">
+export default function HomeScreen() {
+  const [collapsed, setCollapsed] = useState(false);
 
-                <Sidebar></Sidebar>
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar */}
+      <Navbar />
 
-                <Outlet></Outlet>
+      {/* Content Area */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-            </div>
-            <Footer></Footer>
-        </>
-    );
+        {/* Main Content */}
+        <main className="flex-1 overflow-auto bg-white p-6">
+          <Outlet />
+        </main>
+      </div>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
 }
-
-export default HomeScreen;

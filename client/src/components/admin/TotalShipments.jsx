@@ -46,7 +46,7 @@ const [trendData, setTrendData] = useState([
   const COLORS = ["#6F00FF", "#3B0270", "#E9B3FB"];
 
   return (
-    <div className="w-252 grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Shipment Stats */}
       <Card className="shadow-lg rounded-2xl">
         <CardHeader>

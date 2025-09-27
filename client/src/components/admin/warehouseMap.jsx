@@ -46,7 +46,7 @@ export default function WarehouseMap() {
     if (warehouses?.length === 0) return (<p>Loading...</p>)
 
     return (
-        <div>
+        <div className="mt-5 w-full min-h-full bg-white rounded-xl shadow p-6">
             <h2 className="text-2xl text-[#3B0270]">Map View:</h2>
 
             <div className="w-160 h-[500px] rounded-xl overflow-hidden shadow-lg">

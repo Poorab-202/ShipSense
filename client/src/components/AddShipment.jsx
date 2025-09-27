@@ -115,7 +115,7 @@ export default function AddShipment() {
   };
 
   return (
-    <div className="p-6 w-252 bg-white min-h-screen">
+    <div className="w-full min-h-full bg-white rounded-xl shadow p-6">
       <Card className="shadow-lg rounded-2xl p-4">
         <CardHeader>
           <CardTitle className="text-[#3B0270] text-2xl font-bold">

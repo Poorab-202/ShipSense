@@ -18,12 +18,12 @@ const warehouseSchema = new mongoose.Schema(
             }
         },
         capacity: {
-            type: Number, // total capacity (e.g., in pallets, units, or cubic meters)
+            type: Number,
             required: true,
             min: 0,
         },
         usedCapacity: {
-            type: Number, // how much is currently used
+            type: Number, 
             default: 0,
             min: 0,
         },
@@ -31,7 +31,7 @@ const warehouseSchema = new mongoose.Schema(
             {
                 itemName: { type: String, required: true },
                 quantity: { type: Number, required: true, min: 0 },
-                unit: { type: String, default: "units" }, // e.g., boxes, pallets, kg
+                unit: { type: String, default: "units" }, 
             },
         ],
         manager: {

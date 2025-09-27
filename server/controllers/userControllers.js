@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/UserModel.js";
-// 🔹 Create user
+
 export const createUser = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
@@ -28,7 +28,7 @@ export const createUser = async (req, res) => {
     }
 };
 
-// 🔹 Get all users
+
 export const getUsers = async (req, res) => {
     try {
         const users = await User.find().populate("warehouse");
@@ -39,7 +39,7 @@ export const getUsers = async (req, res) => {
 };
 
 
-// Get all managers
+
 export const getManagers = async (req, res) => {
     try {
         const managers = await User.find({ role: "Manager" });
@@ -60,7 +60,7 @@ export const getManagers = async (req, res) => {
 };
 
 
-// 🔹 Get user by ID
+
 export const getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id).populate(
@@ -78,7 +78,7 @@ export const getUserById = async (req, res) => {
     }
 };
 
-// 🔹 Update user
+
 export const updateUser = async (req, res) => {
     try {
         const { name, role, status, warehouse } = req.body;
@@ -101,7 +101,7 @@ export const updateUser = async (req, res) => {
     }
 };
 
-// 🔹 Delete user
+
 export const deleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
@@ -116,7 +116,7 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-// 🔹 Login user
+
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -133,11 +133,11 @@ export const loginUser = async (req, res) => {
                 .status(400)
                 .json({ success: false, message: "Invalid credentials" });
 
-        // Update last login
+       
         user.lastLogin = new Date();
         await user.save();
 
-        // Generate JWT (optional, you can store in cookies)
+        
         const token = jwt.sign(
             { id: user._id, role: user.role },
             process.env.JWT_SECRET,

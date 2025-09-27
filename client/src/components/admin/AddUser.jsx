@@ -104,7 +104,7 @@ export default function AddUser({ onClose, onSuccess }) {
   };
 
   return (
-    <div className="flex items-center justify-center w-252">
+    <div className="flex items-center justify-center">
       <Card className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-6">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-[#3B0270]">
