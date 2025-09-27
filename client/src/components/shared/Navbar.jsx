@@ -10,7 +10,7 @@ function Navbar() {
             <nav className="flex items-center justify-between px-6 py-3 bg-[#3B0270] text-white shadow-md">
 
                 <div className="flex items-center space-x-2">
-                    <img src="public\logo.jpg" alt="Logo" className="h-8 w-8" />
+                    <img src="\logo.jpg" alt="Logo" className="h-8 w-8" />
                     <span className="text-lg font-bold tracking-wide">Campus Express</span>
                 </div>
 
