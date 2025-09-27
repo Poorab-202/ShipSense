@@ -3,10 +3,10 @@ import { Home, Package, Truck, Settings, Building2, ChevronLeft, ChevronRight } 
 
 export default function Sidebar({ collapsed, setCollapsed }) {
   const navItems = [
-    { to: "/", label: "Dashboard", icon: <Home size={20} /> },
-    { to: "/shipment", label: "Shipments", icon: <Truck size={20} /> },
-    { to: "/warehouse", label: "Warehouse", icon: <Building2 size={20} /> },
-    { to: "/users", label: "Users", icon: <Settings size={20} /> },
+    { to: "/home", label: "Dashboard", icon: <Home size={20} /> },
+    { to: "/home/shipment", label: "Shipments", icon: <Truck size={20} /> },
+    { to: "/home/warehouse", label: "Warehouse", icon: <Building2 size={20} /> },
+    { to: "/home/users", label: "Users", icon: <Settings size={20} /> },
   ];
 
   return (
