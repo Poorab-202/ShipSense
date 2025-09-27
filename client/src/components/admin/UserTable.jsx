@@ -72,7 +72,7 @@ export default function UserTable() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-[#3B0270]">User Management</h1>
-        <Link to="/users/add">
+        <Link to="/home/users/add">
           <Button className="bg-[#6F00FF] hover:bg-[#3B0270] text-white">
             + Add New User
           </Button>

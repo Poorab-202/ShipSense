@@ -33,7 +33,7 @@ export default function Signup() {
 
       if (response.data.success) {
         toast.success("Signup successful! Please login.");
-        navigate("/login"); // ✅ redirect after signup
+        navigate("/"); 
       } else {
         toast.error(response.data.message || "Signup failed");
       }

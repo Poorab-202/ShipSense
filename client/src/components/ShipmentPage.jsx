@@ -60,12 +60,14 @@ export default function ShipmentsPage() {
       {/* Top bar */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-[#3B0270]">Shipments</h1>
+        <Link to="/home/shipment/add">
         <Button
-          onClick={() => navigate("/shipment/add")}
+         
           className="bg-[#6F00FF] hover:bg-[#3B0270] text-white"
         >
           + Add Shipment
         </Button>
+        </Link>
       </div>
 
       {/* Filter */}
@@ -127,7 +129,7 @@ export default function ShipmentsPage() {
                     : "Pending Pickup"}
                 </TableCell>
                 <TableCell>
-                  <Link to={`/shipment/update/${shipment._id}`}>
+                  <Link to={`/home/shipment/update/${shipment._id}`}>
                     <Button className="cursor-pointer">Open</Button>
                   </Link>
                 </TableCell>

@@ -190,7 +190,7 @@ export default function WarehouseDetails() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Link to={`/warehouse/${wh._id}`}>
+                    <Link to={`/home/warehouse/${wh._id}`}>
                       <Button>View</Button>
                     </Link>
                   </TableCell>
