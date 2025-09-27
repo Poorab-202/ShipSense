@@ -1,5 +1,5 @@
 import Warehouse from "../models/warehouseModel.js";
-import User from "../models/UserModel.js";
+import User from "../models/userModel.js";
 
 export const addWarehouse = async (req, res) => {
     try {
