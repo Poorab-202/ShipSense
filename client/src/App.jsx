@@ -22,7 +22,7 @@ import Signup from './components/auth/Signup';
 
 const appRouter = createBrowserRouter([
   {
-    path: "/",
+    path: "/home",
     element: <HomeScreen></HomeScreen>,
     children:
       [
@@ -31,45 +31,45 @@ const appRouter = createBrowserRouter([
           element: <DashboardPage></DashboardPage>
         },
         {
-          path: "/shipment/add",
+          path: "/home/shipment/add",
           element: <AddShipment></AddShipment>
         },
         {
-          path: "/shipment",
+          path: "/home/shipment",
           element: <ShipmentsPage></ShipmentsPage>
         },
         {
-          path: "/shipment/update/:id",
+          path: "/home/shipment/update/:id",
           element: <ShipmentDetailsPage></ShipmentDetailsPage>
         },
         {
-          path: "/warehouse",
+          path: "/home/warehouse",
           element: <WarehousePage></WarehousePage>
         },
         {
-          path: "/warehouse/add",
+          path: "/home/warehouse/add",
           element: <AddWarehouse></AddWarehouse>
         },
         {
-          path: "/warehouse/:id",
+          path: "/home/warehouse/:id",
           element: <SingleWarehouse></SingleWarehouse>
         },
         {
-          path: "/users",
+          path: "/home/users",
           element: <UserManagement></UserManagement>
         },
         {
-          path: "/users/add",
+          path: "/home/users/add",
           element: <AddUser></AddUser>
         },
         {
-          path: "/inventory",
+          path: "/home/inventory",
           element: <AddInventory></AddInventory>
         },
       ]
   },
   {
-    path: "/login",
+    path: "/",
     element: <Login></Login>
   },
   {
