@@ -4,20 +4,9 @@ const shipmentActivitySchema = new mongoose.Schema(
   {
     shipment: { type: mongoose.Schema.Types.ObjectId, ref: "Shipment", required: true },
     status: {
-      type: String,
-      enum: [
-        "Pending Pickup",
-        "Picked Up",
-        "In Transit",
-        "Arrived at Hub",
-        "Out for Delivery",
-        "Delivered",
-        "Delayed",
-        "Cancelled",
-      ],
-      required: true,
+      type: String
     },
-    location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" },
+    Warehouse: { type: mongoose.Schema.Types.ObjectId, ref: "Warehouse" },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     remarks: { type: String },
   },

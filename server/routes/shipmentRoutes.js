@@ -13,11 +13,12 @@ const router = express.Router();
 
 
 router.post("/add", addShipment);
-router.post("/getTrackingId", getTrackingId);
-router.get("/", getShipments);
+router.get("/getTrackingId", getTrackingId);  
+router.get("/get", getShipments);
 router.get("/:id", getShipmentById);
 router.put("/:id", updateShipment);
 router.put("/:id/status", updateShipmentStatus);
 router.delete("/:id", deleteShipment);
+
 
 export default router;

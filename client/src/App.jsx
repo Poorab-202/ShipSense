@@ -16,6 +16,8 @@ import UserManagement from './components/admin/UserManagement';
 import AddUser from './components/admin/AddUser';
 import InventoryPage from './components/InventoryPage';
 import AddInventory from './components/admin/AddInventory';
+import { Toaster } from 'sonner';
+
 
 const appRouter = createBrowserRouter([
   {
@@ -77,6 +79,7 @@ function App() {
   return (
     <>
       <RouterProvider router={appRouter}></RouterProvider>
+      <Toaster richColors position="top-right"></Toaster>
     </>
   )
 }

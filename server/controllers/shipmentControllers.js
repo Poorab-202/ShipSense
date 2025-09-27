@@ -1,6 +1,7 @@
 import Shipment from "../models/shipmentModel.js";
 import ShipmentActivity from "../models/shipmentActivityModel.js";
 import Client from "../models/clientModel.js"
+import UniqueIdGenerator from "../utils/uniqueIdGenerator.js";
 
 
 
@@ -19,23 +20,52 @@ export const getTrackingId = async (req, res) => {
     }
 }
 
-
 export const addShipment = async (req, res) => {
     try {
         const { trackingId, description, weight, dimensions, pickupDate, sender, recipient } = req.body;
 
-
-        const senderClient = new Client(sender);
+        // Map sender
+        const senderClient = new Client({
+            name: sender.name,
+            email: sender.email,
+            phone: sender.contact,
+            alternatePhone: sender.alternateContact,
+            address: {
+                street: sender.street,
+                city: sender.city,
+                state: sender.state,
+                postalCode: sender.postalCode,
+                country: sender.country,
+            },
+            idType: sender.idType,
+            idNumber: sender.idNumber,
+        });
         await senderClient.save();
 
-        const recipientClient = new Client(recipient);
+        // Map recipient
+        const recipientClient = new Client({
+            name: recipient.name,
+            email: recipient.email,
+            phone: recipient.contact,
+            alternatePhone: recipient.alternateContact,
+            address: {
+                street: recipient.street,
+                city: recipient.city,
+                state: recipient.state,
+                postalCode: recipient.postalCode,
+                country: recipient.country,
+            },
+            idType: recipient.idType,
+            idNumber: recipient.idNumber,
+        });
         await recipientClient.save();
 
+        // Expected delivery date
         const expectedDeliveryDate = pickupDate
             ? new Date(new Date(pickupDate).setDate(new Date(pickupDate).getDate() + 5))
             : null;
 
-
+        // Save shipment
         const shipment = new Shipment({
             trackingId,
             description,
@@ -46,11 +76,22 @@ export const addShipment = async (req, res) => {
             pickupDate,
             expectedDeliveryDate,
         });
-
         await shipment.save();
 
-        res.status(201).json({ success: true, data: shipment });
+        // First activity
+        const activity = new ShipmentActivity({
+            shipment: shipment._id,
+            status: "Pending Pickup",
+            remarks: "Shipment created and awaiting pickup",
+        });
+        await activity.save();
+
+        shipment.activities = [activity._id];
+        await shipment.save();
+
+        res.status(201).json({ success: true, data: shipment, activity });
     } catch (err) {
+        console.error("Error in addShipment:", err);
         res.status(500).json({ success: false, message: err.message });
     }
 };
@@ -70,22 +111,20 @@ export const getShipments = async (req, res) => {
 
 
 export const getShipmentById = async (req, res) => {
-    try {
-        const shipment = await Shipment.findById(req.params.id)
-            .populate("sender recipient", "name email contactNumber")
-            .populate({
-                path: "activities",
-                populate: { path: "updatedBy", select: "name email" },
-            });
+  try {
+    const shipment = await Shipment.findById(req.params.id)
+      .populate("sender")      // 👈 fetch full client object
+      .populate("recipient")   // 👈 fetch full client object
+      .populate("activities"); // optional if you want full activity details
 
-        if (!shipment) {
-            return res.status(404).json({ success: false, message: "Shipment not found" });
-        }
-
-        res.json({ success: true, data: shipment });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+    if (!shipment) {
+      return res.status(404).json({ success: false, message: "Shipment not found" });
     }
+
+    res.status(200).json({ success: true, data: shipment });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
 
@@ -124,7 +163,9 @@ export const updateShipment = async (req, res) => {
 
 export const updateShipmentStatus = async (req, res) => {
     try {
+        console.log(req.body);
         const { status, location, updatedBy, remarks } = req.body;
+
 
         const shipment = await Shipment.findById(req.params.id);
         if (!shipment) {

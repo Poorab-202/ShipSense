@@ -5,72 +5,57 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { BASE_URL } from "@/config/api";
+import { useNavigate } from "react-router-dom";
 
 export default function AddShipment() {
-  const [trackingID, setTrackingID] = useState("");
-  const [expectedDate, setExpectedDate] = useState("");
+  const [trackingId, setTrackingId] = useState("");
+  const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
+  const navigate=useNavigate();
+
   const [formData, setFormData] = useState({
     weight: "",
-    height: "",
-    width: "",
-    length: "",
     description: "",
     pickupDate: "",
+    dimensions: { height: "", width: "", length: "" },
     sender: {
       name: "",
       email: "",
-      street: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: "",
-      contact: "",
-      alternateContact: "",
+      phone: "",
+      alternatePhone: "",
+      address: { street: "", city: "", state: "", postalCode: "", country: "" },
       idType: "Aadhar",
-      idNumber: ""
+      idNumber: "",
     },
     recipient: {
       name: "",
       email: "",
-      street: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: "",
-      contact: "",
-      alternateContact: "",
+      phone: "",
+      alternatePhone: "",
+      address: { street: "", city: "", state: "", postalCode: "", country: "" },
       idType: "Aadhar",
-      idNumber: ""
-    }
+      idNumber: "",
+    },
   });
 
-  useEffect(() => {
-    // Fetch tracking ID from backend
-    const fetchTrackingID = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/getTrackingId");
-        setTrackingID(res.data.trackingId);
-      } catch (err) {
-        console.error("Error fetching tracking ID", err);
-      }
-    };
-    fetchTrackingID();
-  }, []);
-
-  useEffect(() => {
-    if (formData.pickupDate) {
-      const pickup = new Date(formData.pickupDate);
-      const delivery = new Date(pickup);
-      delivery.setDate(pickup.getDate() + 5);
-      setExpectedDate(delivery.toISOString().split("T")[0]);
-    } else {
-      setExpectedDate("");
-    }
-  }, [formData.pickupDate]);
-
-  const handleChange = (section, field, value) => {
+  // 🔹 handleChange updated to support nested address
+  const handleChange = (section, field, value, nested = null) => {
     if (section === "shipment") {
       setFormData({ ...formData, [field]: value });
+    } else if (section === "dimensions") {
+      setFormData({
+        ...formData,
+        dimensions: { ...formData.dimensions, [field]: value },
+      });
+    } else if (nested === "address") {
+      setFormData({
+        ...formData,
+        [section]: {
+          ...formData[section],
+          address: { ...formData[section].address, [field]: value },
+        },
+      });
     } else {
       setFormData({
         ...formData,
@@ -79,12 +64,52 @@ export default function AddShipment() {
     }
   };
 
+
+  // 🔹 Fetch tracking ID from backend
+  useEffect(() => {
+    const fetchTrackingID = async () => {
+      try {
+        const res = await axios.get(BASE_URL + "/shipment/getTrackingId");
+        setTrackingId(res.data.trackingId);
+      } catch (err) {
+        toast.error("Error fetching tracking ID", err);
+      }
+    };
+    fetchTrackingID();
+  }, []);
+
+  // 🔹 Auto-calc expected delivery date
+  useEffect(() => {
+    if (formData.pickupDate) {
+      const pickup = new Date(formData.pickupDate);
+      const delivery = new Date(pickup);
+      delivery.setDate(pickup.getDate() + 5);
+      setExpectedDeliveryDate(delivery.toISOString().split("T")[0]);
+    } else {
+      setExpectedDeliveryDate("");
+    }
+  }, [formData.pickupDate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    //   const res = await axios.post("/api/shipment/add", { trackingID, ...formData, expectedDate });
-      console.log("Shipment Added:", formData);
+      const payload = {
+        trackingId,
+        description: formData.description,
+        weight: formData.weight,
+        dimensions: formData.dimensions,
+        pickupDate: formData.pickupDate,
+        expectedDeliveryDate,
+        sender: formData.sender,
+        recipient: formData.recipient,
+      };
+
+      const res = await axios.post(BASE_URL + "/shipment/add", payload);
+      toast.success("Shipment Added Successfully!");
+      navigate("/shipment");
+
     } catch (err) {
+      toast.error("Error adding shipment");
       console.error("Error adding shipment", err);
     }
   };
@@ -101,42 +126,70 @@ export default function AddShipment() {
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Shipment Details */}
             <div>
-              <h2 className="text-lg font-semibold text-[#6F00FF] mb-2">Shipment Details</h2>
+              <h2 className="text-lg font-semibold text-[#6F00FF] mb-2">
+                Shipment Details
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label>Tracking ID</Label>
-                  <Input value={trackingID} readOnly className="bg-gray-100" />
+                  <Input value={trackingId} readOnly className="bg-gray-100" />
                 </div>
                 <div>
                   <Label>Weight (kg)</Label>
-                  <Input type="number" value={formData.weight} onChange={(e) => handleChange("shipment", "weight", e.target.value)} />
+                  <Input
+                    type="number"
+                    value={formData.weight}
+                    onChange={(e) => handleChange("shipment", "weight", e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label>Height (cm)</Label>
-                  <Input type="number" value={formData.height} onChange={(e) => handleChange("shipment", "height", e.target.value)} />
+                  <Input
+                    type="number"
+                    value={formData.dimensions.height}
+                    onChange={(e) => handleChange("dimensions", "height", e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label>Width (cm)</Label>
-                  <Input type="number" value={formData.width} onChange={(e) => handleChange("shipment", "width", e.target.value)} />
+                  <Input
+                    type="number"
+                    value={formData.dimensions.width}
+                    onChange={(e) => handleChange("dimensions", "width", e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label>Length (cm)</Label>
-                  <Input type="number" value={formData.length} onChange={(e) => handleChange("shipment", "length", e.target.value)} />
+                  <Input
+                    type="number"
+                    value={formData.dimensions.length}
+                    onChange={(e) => handleChange("dimensions", "length", e.target.value)}
+                  />
                 </div>
                 <div className="md:col-span-2">
                   <Label>Description</Label>
-                  <Input value={formData.description} onChange={(e) => handleChange("shipment", "description", e.target.value)} />
+                  <Input
+                    value={formData.description}
+                    onChange={(e) => handleChange("shipment", "description", e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label>Pickup Date</Label>
-                  <Input type="date" value={formData.pickupDate} onChange={(e) => handleChange("shipment", "pickupDate", e.target.value)} />
+                  <Input
+                    type="date"
+                    value={formData.pickupDate}
+                    onChange={(e) => handleChange("shipment", "pickupDate", e.target.value)}
+                  />
                 </div>
                 <div>
                   <Label>Expected Delivery Date</Label>
-                  <Input value={expectedDate} readOnly className="bg-gray-100" />
+                  <Input value={expectedDeliveryDate} readOnly className="bg-gray-100" />
                 </div>
               </div>
             </div>
+
+
+
 
             {/* Sender Details */}
             <div>
@@ -199,8 +252,10 @@ export default function AddShipment() {
                 <Input placeholder="ID Number" value={formData.recipient.idNumber} onChange={(e) => handleChange("recipient", "idNumber", e.target.value)} />
               </div>
             </div>
-
-            <Button type="submit" className="bg-[#6F00FF] hover:bg-[#3B0270] text-white w-full">
+            <Button
+              type="submit"
+              className="bg-[#6F00FF] hover:bg-[#3B0270] text-white w-full"
+            >
               Add Shipment
             </Button>
           </form>
@@ -209,3 +264,5 @@ export default function AddShipment() {
     </div>
   );
 }
+
+

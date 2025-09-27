@@ -1,177 +1,238 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addWarehouse } from "@/redux/slice/warehouseSlice";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { BASE_URL } from "@/config/api";
+import { toast } from "sonner";
 
 export default function AddWarehouse({ onClose, onSuccess }) {
-    // formData sample
-    const [formData, setFormData] = useState({
-        name: "Delhi Central Warehouse",
-        location: "Delhi",
-        capacity: "1000",
-        managerId: "m001"
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    capacity: "",
+    managerId: "",
+    location: {
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+      coordinates: { lat: "", lng: "" }
+    }
+  });
+
+  const [managers, setManagers] = useState([]);
+  const [selectedManager, setSelectedManager] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // ✅ Fetch managers
+  useEffect(() => {
+    const fetchManagers = async () => {
+      try {
+        const res = await axios.get(BASE_URL + "/users/managers");
+        setManagers(res.data.data || []);
+      } catch (err) {
+        console.error("Error fetching managers", err);
+        toast.error("Failed to fetch managers");
+      }
+    };
+    fetchManagers();
+  }, []);
+
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const handleLocationChange = (field, value) => {
+    setFormData({
+      ...formData,
+      location: { ...formData.location, [field]: value }
     });
+  };
 
-    // managers list sample
-    const [managers, setManagers] = useState([
-        {
-            _id: "m001",
-            name: "Rajesh Sharma",
-            contact: "+91-9876543210",
-            email: "rajesh.sharma@example.com"
-        },
-        {
-            _id: "m002",
-            name: "Priya Verma",
-            contact: "+91-9123456789",
-            email: "priya.verma@example.com"
-        },
-        {
-            _id: "m003",
-            name: "Amit Singh",
-            contact: "+91-9988776655",
-            email: "amit.singh@example.com"
-        }
-    ]);
-
-    // selected manager example (linked to managerId = "m001")
-    const [selectedManager, setSelectedManager] = useState({
-        _id: "m001",
-        name: "Rajesh Sharma",
-        contact: "+91-9876543210",
-        email: "rajesh.sharma@example.com"
+  const handleCoordinatesChange = (field, value) => {
+    setFormData({
+      ...formData,
+      location: {
+        ...formData.location,
+        coordinates: { ...formData.location.coordinates, [field]: value }
+      }
     });
+  };
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const handleManagerSelect = (id) => {
+    handleChange("managerId", id);
+    const manager = managers.find((m) => m._id === id);
+    setSelectedManager(manager || null);
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    useEffect(() => {
-        const fetchManagers = async () => {
-            try {
-                // const res = await axios.get("/api/managers");
-                // setManagers(res.data);
-            } catch (err) {
-                console.error("Error fetching managers", err);
-            }
-        };
-        fetchManagers();
-    }, []);
+    try {
+      const payload = {
+        name: formData.name,
+        capacity: Number(formData.capacity),
+        location: {
+          address: formData.location.address,
+          city: formData.location.city,
+          state: formData.location.state,
+          country: formData.location.country,
+          coordinates: {
+            lat: Number(formData.location.coordinates.lat),
+            lng: Number(formData.location.coordinates.lng),
+          }
+        },
+        inventory: [],
+        staff: []
+      };
 
-    const handleChange = (field, value) => {
-        setFormData({ ...formData, [field]: value });
-    };
+      const res = await axios.post(BASE_URL + "/warehouse/add", payload);
 
-    const handleManagerSelect = (id) => {
-        handleChange("managerId", id);
-        const manager = managers.find((m) => m._id === id);
-        setSelectedManager(manager);
-    };
+      if (res.data.success) {
+        dispatch(addWarehouse(res.data.data));
+        toast.success("Warehouse added successfully");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError(null);
+        if (onSuccess) onSuccess();
+        if (onClose) onClose();
+      } else {
+        toast.error(res.data.message || "Failed to add warehouse");
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message || "Failed to add warehouse";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            await axios.post("/api/warehouse/add", {
-                name: formData.name,
-                location: formData.location,
-                capacity: Number(formData.capacity),
-                managerId: formData.managerId
-            });
+  return (
+    <div className="flex items-center justify-center w-252">
+      <Card className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-6">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold text-[#3B0270]">Add Warehouse</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name */}
+            <div>
+              <Label>Name</Label>
+              <Input
+                value={formData.name}
+                onChange={(e) => handleChange("name", e.target.value)}
+                placeholder="Enter warehouse name"
+                required
+              />
+            </div>
 
-            if (onSuccess) onSuccess();
-            if (onClose) onClose();
-        } catch (err) {
-            setError(err.response?.data?.message || "Failed to add warehouse");
-        } finally {
-            setLoading(false);
-        }
-    };
+            {/* Capacity */}
+            <div>
+              <Label>Capacity</Label>
+              <Input
+                type="number"
+                value={formData.capacity}
+                onChange={(e) => handleChange("capacity", e.target.value)}
+                placeholder="Enter total capacity"
+                required
+              />
+            </div>
 
-    return (
-        <div className=" flex items-center justify-center w-252">
-            <Card className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-6">
-                <CardHeader>
-                    <CardTitle className="text-xl font-bold text-[#3B0270]">Add Warehouse</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <Label>Name</Label>
-                            <Input
-                                value={formData.name}
-                                onChange={(e) => handleChange("name", e.target.value)}
-                                placeholder="Enter warehouse name"
-                                required
-                            />
-                        </div>
+            {/* Location */}
+            <div>
+              <h3 className="text-md font-semibold text-[#6F00FF] mt-4">Location</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <Input
+                  placeholder="Address"
+                  value={formData.location.address}
+                  onChange={(e) => handleLocationChange("address", e.target.value)}
+                  required
+                />
+                <Input
+                  placeholder="City"
+                  value={formData.location.city}
+                  onChange={(e) => handleLocationChange("city", e.target.value)}
+                />
+                <Input
+                  placeholder="State"
+                  value={formData.location.state}
+                  onChange={(e) => handleLocationChange("state", e.target.value)}
+                />
+                <Input
+                  placeholder="Country"
+                  value={formData.location.country}
+                  onChange={(e) => handleLocationChange("country", e.target.value)}
+                />
+                <Input
+                  type="number"
+                  placeholder="Latitude"
+                  value={formData.location.coordinates.lat}
+                  onChange={(e) => handleCoordinatesChange("lat", e.target.value)}
+                  required
+                />
+                <Input
+                  type="number"
+                  placeholder="Longitude"
+                  value={formData.location.coordinates.lng}
+                  onChange={(e) => handleCoordinatesChange("lng", e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-                        <div>
-                            <Label>Location</Label>
-                            <Input
-                                value={formData.location}
-                                onChange={(e) => handleChange("location", e.target.value)}
-                                placeholder="Enter warehouse location"
-                                required
-                            />
-                        </div>
+            {/* Manager */}
+            {/* <div>
+              <Label>Assign Manager</Label>
+              <Select value={formData.managerId} onValueChange={handleManagerSelect}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Manager" />
+                </SelectTrigger>
+                <SelectContent>
+                  {managers.map((m) => (
+                    <SelectItem key={m._id} value={m._id}>
+                      {m.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div> */}
 
-                        <div>
-                            <Label>Capacity</Label>
-                            <Input
-                                type="number"
-                                value={formData.capacity}
-                                onChange={(e) => handleChange("capacity", e.target.value)}
-                                placeholder="Enter total capacity"
-                                required
-                            />
-                        </div>
+            {/* Selected Manager Info */}
+            {/* {selectedManager && (
+              <div className="bg-[#FFF1F1] p-3 rounded-lg text-sm">
+                <p><strong>Contact:</strong> {selectedManager.contactNumber || "N/A"}</p>
+                <p><strong>Email:</strong> {selectedManager.email}</p>
+              </div>
+            )} */}
 
-                        <div>
-                            <Label>Assign Manager</Label>
-                            <Select value={formData.managerId} onValueChange={handleManagerSelect}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select Manager" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {managers.map((m) => (
-                                        <SelectItem key={m._id} value={m._id}>
-                                            {m.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+            {/* Error */}
+            {/* {error && <p className="text-red-500 text-sm text-center">{error}</p>} */}
 
-                        {selectedManager && (
-                            <div className="bg-[#FFF1F1] p-3 rounded-lg">
-                                <p><strong>Contact:</strong> {selectedManager.contact}</p>
-                                <p><strong>Email:</strong> {selectedManager.email}</p>
-                            </div>
-                        )}
-
-                        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-                        <div className="flex justify-end gap-3">
-                            <Button variant="ghost" onClick={onClose} type="button">
-                                Cancel
-                            </Button>
-                            <Button
-                                type="submit"
-                                disabled={loading}
-                                className="bg-[#6F00FF] hover:bg-[#3B0270] text-white"
-                            >
-                                {loading ? "Saving..." : "Save"}
-                            </Button>
-                        </div>
-                    </form>
-                </CardContent>
-            </Card>
-        </div>
-    );
+            {/* Actions */}
+            <div className="flex justify-end gap-3">
+              <Button variant="ghost" onClick={onClose} type="button">
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="bg-[#6F00FF] hover:bg-[#3B0270] text-white"
+              >
+                {loading ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

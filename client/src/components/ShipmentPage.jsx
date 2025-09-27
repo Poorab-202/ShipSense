@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { setShipments, setLoading, setError } from "../redux/slice/shipmentSlice.js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,30 +13,47 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Link, useNavigate } from "react-router-dom";
+import { BASE_URL } from "@/config/api";
 
 export default function ShipmentsPage() {
-  const [shipments, setShipments] = useState([]);
   const [filter, setFilter] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const shipmentsById = useSelector((state) => state.shipments.byId);
+  const shipmentIds = useSelector((state) => state.shipments.allIds);
+  const loading = useSelector((state) => state.shipments.loading);
+  const error = useSelector((state) => state.shipments.error);
+
+  const shipments = shipmentIds.map((id) => shipmentsById[id]);
 
   useEffect(() => {
     const fetchShipments = async () => {
+      dispatch(setLoading(true));
       try {
-       const res = await axios.get("/api/shipment/all");
-        setShipments(res);
+        const res = await axios.get(BASE_URL + "/shipment/get");
+        dispatch(setShipments(res.data.data)); // ✅ load into store
       } catch (err) {
         console.error("Error fetching shipments", err);
+        dispatch(setError(err.message));
+      } finally {
+        dispatch(setLoading(false));
       }
     };
     fetchShipments();
-  }, []);
+  }, [dispatch]);
 
-  const filteredShipments = shipments.filter(
-    (s) =>
-      s.trackingID.toLowerCase().includes(filter.toLowerCase()) ||
-      s.sender.name.toLowerCase().includes(filter.toLowerCase()) ||
-      s.recipient.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredShipments = shipments.filter((s) => {
+    const trackingId = s.trackingId || "";
+    const senderName = s.sender?.name || "";
+    const recipientName = s.recipient?.name || "";
+
+    return (
+      trackingId.toLowerCase().includes(filter.toLowerCase()) ||
+      senderName.toLowerCase().includes(filter.toLowerCase()) ||
+      recipientName.toLowerCase().includes(filter.toLowerCase())
+    );
+  });
 
   return (
     <div className="w-252 p-6 bg-white min-h-screen">
@@ -59,6 +78,10 @@ export default function ShipmentsPage() {
         />
       </div>
 
+      {/* Loading / Error */}
+      {loading && <p className="text-gray-500">Loading shipments...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
+
       {/* Shipments Table */}
       <div className="bg-white rounded-xl shadow-md overflow-auto">
         <Table>
@@ -77,20 +100,45 @@ export default function ShipmentsPage() {
           <TableBody>
             {filteredShipments.map((shipment) => (
               <TableRow key={shipment._id}>
-                <TableCell>{shipment.trackingID}</TableCell>
-                <TableCell>{shipment.sender.name}</TableCell>
-                <TableCell>{shipment.recipient.name}</TableCell>
+                <TableCell>{shipment.trackingId}</TableCell>
+                <TableCell>{shipment.sender?.name || "-"}</TableCell>
+                <TableCell>{shipment.recipient?.name || "-"}</TableCell>
                 <TableCell>{shipment.weight}</TableCell>
-                <TableCell>{shipment.pickupDate}</TableCell>
-                <TableCell>{shipment.expectedDate}</TableCell>
-                <TableCell>{shipment.status}</TableCell>
-                <TableCell><Button onClick={() => navigate("/shipment/update/:1234")} className="cursor-pointer">Open</Button></TableCell>
+                <TableCell>
+                  {shipment.pickupDate
+                    ? new Date(shipment.pickupDate).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
+                    : "-"}
+                </TableCell>
+                <TableCell>
+                  {shipment.expectedDeliveryDate
+                    ? new Date(shipment.expectedDeliveryDate).toLocaleDateString(
+                        "en-IN",
+                        { day: "2-digit", month: "short", year: "numeric" }
+                      )
+                    : "-"}
+                </TableCell>
+                <TableCell>
+                  {shipment.activities?.length > 0
+                    ? shipment.activities[shipment.activities.length - 1].status
+                    : "Pending Pickup"}
+                </TableCell>
+                <TableCell>
+                  <Link to={`/shipment/update/${shipment._id}`}>
+                    <Button className="cursor-pointer">Open</Button>
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        {filteredShipments.length === 0 && (
-          <p className="text-center text-gray-500 py-4">No shipments found.</p>
+        {filteredShipments.length === 0 && !loading && (
+          <p className="text-center text-gray-500 py-4">
+            No shipments found.
+          </p>
         )}
       </div>
     </div>
