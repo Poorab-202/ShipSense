@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { BASE_URL } from "@/config/api"; // ✅ use BASE_URL instead of hardcoding
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function Login() {
@@ -114,12 +114,12 @@ export default function Login() {
                             <div className="flex justify-between text-sm mt-2">
                                 <p>
                                     Don&apos;t have an account?
-                                    <a
-                                        href="/sign"
+                                    <Link
+                                        to="/sign"
                                         className="text-[#6F00FF] hover:underline ml-1"
                                     >
                                         Sign up
-                                    </a>
+                                    </Link>
                                 </p>
                                 <a
                                     href="/forgot-password"

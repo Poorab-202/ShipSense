@@ -22,6 +22,14 @@ import Signup from './components/auth/Signup';
 
 const appRouter = createBrowserRouter([
   {
+    path: "/",
+    element: <Login></Login>
+  },
+  {
+    path: "/sign",
+    element: <Signup></Signup>
+  },
+  {
     path: "/home",
     element: <HomeScreen></HomeScreen>,
     children:
@@ -67,14 +75,6 @@ const appRouter = createBrowserRouter([
           element: <AddInventory></AddInventory>
         },
       ]
-  },
-  {
-    path: "/",
-    element: <Login></Login>
-  },
-  {
-    path: "/sign",
-    element: <Signup></Signup>
   }
 ])
 

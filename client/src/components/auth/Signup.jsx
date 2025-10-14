@@ -135,7 +135,7 @@ export default function Signup() {
                 <p>
                   Already have an account?
                   <Link
-                    to="/login"
+                    to="/"
                     className="text-[#6F00FF] hover:underline ml-1"
                   >
                     Login
