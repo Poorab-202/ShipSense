@@ -58,7 +58,7 @@ export default function Login() {
                     />
                 </div>
                 <div className="text-center pb-6">
-                    <h2 className="text-lg font-semibold">Campus Express</h2>
+                    <h2 className="text-lg font-semibold">ShipSense</h2>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@ export default function Login() {
                         <CardTitle className="text-[#3B0270] text-center text-2xl font-bold">
                             Welcome back!
                         </CardTitle>
-                        <p className="text-[#3B0270] text-center text-sm mt-1">
+                        <p className="text-center text-gray-500 text-sm mt-1">
                             Sign in to manage your logistics
                         </p>
                     </CardHeader>
@@ -77,7 +77,7 @@ export default function Login() {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <Label htmlFor="email">Email</Label>
-                                <Input
+                                <Input className="my-1"
                                     id="email"
                                     type="email"
                                     placeholder="Enter your email"
@@ -89,7 +89,7 @@ export default function Login() {
 
                             <div>
                                 <Label htmlFor="password">Password</Label>
-                                <Input
+                                <Input className="my-1"
                                     id="password"
                                     type="password"
                                     placeholder="Enter your password"

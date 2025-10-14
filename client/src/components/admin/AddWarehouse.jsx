@@ -127,7 +127,7 @@ export default function AddWarehouse({ onClose, onSuccess }) {
             {/* Name */}
             <div>
               <Label>Name</Label>
-              <Input
+              <Input className="my-1"
                 value={formData.name}
                 onChange={(e) => handleChange("name", e.target.value)}
                 placeholder="Enter warehouse name"
@@ -138,7 +138,7 @@ export default function AddWarehouse({ onClose, onSuccess }) {
             {/* Capacity */}
             <div>
               <Label>Capacity</Label>
-              <Input
+              <Input className="my-1"
                 type="number"
                 value={formData.capacity}
                 onChange={(e) => handleChange("capacity", e.target.value)}
@@ -151,35 +151,35 @@ export default function AddWarehouse({ onClose, onSuccess }) {
             <div>
               <h3 className="text-md font-semibold text-[#6F00FF] mt-4">Location</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <Input
+                <Input className="my-1"
                   placeholder="Address"
                   value={formData.location.address}
                   onChange={(e) => handleLocationChange("address", e.target.value)}
                   required
                 />
-                <Input
+                <Input className="my-1"
                   placeholder="City"
                   value={formData.location.city}
                   onChange={(e) => handleLocationChange("city", e.target.value)}
                 />
-                <Input
+                <Input className="my-1"
                   placeholder="State"
                   value={formData.location.state}
                   onChange={(e) => handleLocationChange("state", e.target.value)}
                 />
-                <Input
+                <Input className="my-1"
                   placeholder="Country"
                   value={formData.location.country}
                   onChange={(e) => handleLocationChange("country", e.target.value)}
                 />
-                <Input
+                <Input className="my-1"
                   type="number"
                   placeholder="Latitude"
                   value={formData.location.coordinates.lat}
                   onChange={(e) => handleCoordinatesChange("lat", e.target.value)}
                   required
                 />
-                <Input
+                <Input className="my-1"
                   type="number"
                   placeholder="Longitude"
                   value={formData.location.coordinates.lng}

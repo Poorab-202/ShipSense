@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 export default function AddShipment() {
   const [trackingId, setTrackingId] = useState("");
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     weight: "",
@@ -132,11 +132,11 @@ export default function AddShipment() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label>Tracking ID</Label>
-                  <Input value={trackingId} readOnly className="bg-gray-100" />
+                  <Input value={trackingId} readOnly className="my-1 bg-gray-100" />
                 </div>
                 <div>
                   <Label>Weight (kg)</Label>
-                  <Input
+                  <Input className="my-1"
                     type="number"
                     value={formData.weight}
                     onChange={(e) => handleChange("shipment", "weight", e.target.value)}
@@ -144,7 +144,7 @@ export default function AddShipment() {
                 </div>
                 <div>
                   <Label>Height (cm)</Label>
-                  <Input
+                  <Input className="my-1"
                     type="number"
                     value={formData.dimensions.height}
                     onChange={(e) => handleChange("dimensions", "height", e.target.value)}
@@ -152,7 +152,7 @@ export default function AddShipment() {
                 </div>
                 <div>
                   <Label>Width (cm)</Label>
-                  <Input
+                  <Input className="my-1"
                     type="number"
                     value={formData.dimensions.width}
                     onChange={(e) => handleChange("dimensions", "width", e.target.value)}
@@ -160,7 +160,7 @@ export default function AddShipment() {
                 </div>
                 <div>
                   <Label>Length (cm)</Label>
-                  <Input
+                  <Input className="my-1"
                     type="number"
                     value={formData.dimensions.length}
                     onChange={(e) => handleChange("dimensions", "length", e.target.value)}
@@ -168,14 +168,14 @@ export default function AddShipment() {
                 </div>
                 <div className="md:col-span-2">
                   <Label>Description</Label>
-                  <Input
+                  <Input className="my-1"
                     value={formData.description}
                     onChange={(e) => handleChange("shipment", "description", e.target.value)}
                   />
                 </div>
                 <div>
                   <Label>Pickup Date</Label>
-                  <Input
+                  <Input className="my-1"
                     type="date"
                     value={formData.pickupDate}
                     onChange={(e) => handleChange("shipment", "pickupDate", e.target.value)}
@@ -183,7 +183,7 @@ export default function AddShipment() {
                 </div>
                 <div>
                   <Label>Expected Delivery Date</Label>
-                  <Input value={expectedDeliveryDate} readOnly className="bg-gray-100" />
+                  <Input value={expectedDeliveryDate} readOnly className="my-1 bg-gray-100" />
                 </div>
               </div>
             </div>
@@ -195,17 +195,18 @@ export default function AddShipment() {
             <div>
               <h2 className="text-lg font-semibold text-[#6F00FF] mb-2">Sender Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input placeholder="Name" value={formData.sender.name} onChange={(e) => handleChange("sender", "name", e.target.value)} />
-                <Input placeholder="Email" value={formData.sender.email} onChange={(e) => handleChange("sender", "email", e.target.value)} />
-                <Input placeholder="Street" value={formData.sender.street} onChange={(e) => handleChange("sender", "street", e.target.value)} />
-                <Input placeholder="City" value={formData.sender.city} onChange={(e) => handleChange("sender", "city", e.target.value)} />
-                <Input placeholder="State" value={formData.sender.state} onChange={(e) => handleChange("sender", "state", e.target.value)} />
-                <Input placeholder="Postal Code" value={formData.sender.postalCode} onChange={(e) => handleChange("sender", "postalCode", e.target.value)} />
-                <Input placeholder="Country" value={formData.sender.country} onChange={(e) => handleChange("sender", "country", e.target.value)} />
-                <Input placeholder="Contact" value={formData.sender.contact} onChange={(e) => handleChange("sender", "contact", e.target.value)} />
-                <Input placeholder="Alternate Contact" value={formData.sender.alternateContact} onChange={(e) => handleChange("sender", "alternateContact", e.target.value)} />
+                <Input className="my-1" placeholder="Name" value={formData.sender.name} onChange={(e) => handleChange("sender", "name", e.target.value)} />
+                <Input className="my-1" placeholder="Email" value={formData.sender.email} onChange={(e) => handleChange("sender", "email", e.target.value)} />
+                <Input className="my-1" placeholder="Street" value={formData.sender.street} onChange={(e) => handleChange("sender", "street", e.target.value)} />
+                <Input className="my-1" placeholder="City" value={formData.sender.city} onChange={(e) => handleChange("sender", "city", e.target.value)} />
+                <Input className="my-1" placeholder="State" value={formData.sender.state} onChange={(e) => handleChange("sender", "state", e.target.value)} />
+                <Input className="my-1" placeholder="Postal Code" value={formData.sender.postalCode} onChange={(e) => handleChange("sender", "postalCode", e.target.value)} />
+                <Input className="my-1" placeholder="Country" value={formData.sender.country} onChange={(e) => handleChange("sender", "country", e.target.value)} />
+                <Input className="my-1" placeholder="Contact" value={formData.sender.contact} onChange={(e) => handleChange("sender", "contact", e.target.value)} />
+                <Input className="my-1" placeholder="Alternate Contact" value={formData.sender.alternateContact} onChange={(e) => handleChange("sender", "alternateContact", e.target.value)} />
                 <div>
                   <Label>ID Type</Label>
+                   <div className="my-1">
                   <Select value={formData.sender.idType} onValueChange={(value) => handleChange("sender", "idType", value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select ID Type" />
@@ -217,8 +218,9 @@ export default function AddShipment() {
                       <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
+                  </div>
                 </div>
-                <Input placeholder="ID Number" value={formData.sender.idNumber} onChange={(e) => handleChange("sender", "idNumber", e.target.value)} />
+                <Input className="my-1" placeholder="ID Number" value={formData.sender.idNumber} onChange={(e) => handleChange("sender", "idNumber", e.target.value)} />
               </div>
             </div>
 
@@ -226,28 +228,30 @@ export default function AddShipment() {
             <div>
               <h2 className="text-lg font-semibold text-[#6F00FF] mb-2">Recipient Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input placeholder="Name" value={formData.recipient.name} onChange={(e) => handleChange("recipient", "name", e.target.value)} />
-                <Input placeholder="Email" value={formData.recipient.email} onChange={(e) => handleChange("recipient", "email", e.target.value)} />
-                <Input placeholder="Street" value={formData.recipient.street} onChange={(e) => handleChange("recipient", "street", e.target.value)} />
-                <Input placeholder="City" value={formData.recipient.city} onChange={(e) => handleChange("recipient", "city", e.target.value)} />
-                <Input placeholder="State" value={formData.recipient.state} onChange={(e) => handleChange("recipient", "state", e.target.value)} />
-                <Input placeholder="Postal Code" value={formData.recipient.postalCode} onChange={(e) => handleChange("recipient", "postalCode", e.target.value)} />
-                <Input placeholder="Country" value={formData.recipient.country} onChange={(e) => handleChange("recipient", "country", e.target.value)} />
-                <Input placeholder="Contact" value={formData.recipient.contact} onChange={(e) => handleChange("recipient", "contact", e.target.value)} />
-                <Input placeholder="Alternate Contact" value={formData.recipient.alternateContact} onChange={(e) => handleChange("recipient", "alternateContact", e.target.value)} />
+                <Input className="my-1" placeholder="Name" value={formData.recipient.name} onChange={(e) => handleChange("recipient", "name", e.target.value)} />
+                <Input className="my-1" placeholder="Email" value={formData.recipient.email} onChange={(e) => handleChange("recipient", "email", e.target.value)} />
+                <Input className="my-1" placeholder="Street" value={formData.recipient.street} onChange={(e) => handleChange("recipient", "street", e.target.value)} />
+                <Input className="my-1" placeholder="City" value={formData.recipient.city} onChange={(e) => handleChange("recipient", "city", e.target.value)} />
+                <Input className="my-1" placeholder="State" value={formData.recipient.state} onChange={(e) => handleChange("recipient", "state", e.target.value)} />
+                <Input className="my-1" placeholder="Postal Code" value={formData.recipient.postalCode} onChange={(e) => handleChange("recipient", "postalCode", e.target.value)} />
+                <Input className="my-1" placeholder="Country" value={formData.recipient.country} onChange={(e) => handleChange("recipient", "country", e.target.value)} />
+                <Input className="my-1" placeholder="Contact" value={formData.recipient.contact} onChange={(e) => handleChange("recipient", "contact", e.target.value)} />
+                <Input className="my-1" placeholder="Alternate Contact" value={formData.recipient.alternateContact} onChange={(e) => handleChange("recipient", "alternateContact", e.target.value)} />
                 <div>
                   <Label>ID Type</Label>
-                  <Select value={formData.recipient.idType} onValueChange={(value) => handleChange("recipient", "idType", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select ID Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Aadhar">Aadhar</SelectItem>
-                      <SelectItem value="Passport">Passport</SelectItem>
-                      <SelectItem value="DriverLicense">Driver License</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="my-1">
+                    <Select value={formData.recipient.idType} onValueChange={(value) => handleChange("recipient", "idType", value)}>
+                      <SelectTrigger >
+                        <SelectValue placeholder="Select ID Type" />
+                      </SelectTrigger>
+                      <SelectContent >
+                        <SelectItem value="Aadhar">Aadhaar</SelectItem>
+                        <SelectItem value="Passport">Passport</SelectItem>
+                        <SelectItem value="DriverLicense">Driver License</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <Input placeholder="ID Number" value={formData.recipient.idNumber} onChange={(e) => handleChange("recipient", "idNumber", e.target.value)} />
               </div>

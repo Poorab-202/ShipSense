@@ -3,6 +3,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
     return (
@@ -29,9 +30,11 @@ function Navbar() {
                             <Button variant="ghost" className="justify-start hover:bg-[#FFF1F1]">
                                 <User className="mr-2 h-4 w-4" /> Profile
                             </Button>
-                            <Button variant="ghost" className="justify-start text-red-600 hover:bg-[#FFF1F1]">
-                                <LogOut className="mr-2 h-4 w-4" /> Log Out
-                            </Button>
+                            <Link to="/">
+                                <Button variant="ghost" className="justify-start text-red-600 hover:bg-[#FFF1F1]">
+                                    <LogOut className="mr-2 h-4 w-4" /> Log Out
+                                </Button>
+                            </Link>
                         </div>
                     </PopoverContent>
                 </Popover>

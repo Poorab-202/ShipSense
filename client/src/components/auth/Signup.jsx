@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input  } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { BASE_URL } from "@/config/api";
@@ -68,9 +68,9 @@ export default function Signup() {
         <Card className="w-full max-w-md shadow-xl rounded-2xl">
           <CardHeader>
             <CardTitle className="text-[#3B0270] text-center text-2xl font-bold">
-              Create an account
+              Create an Account
             </CardTitle>
-            <p className="text-[#3B0270] text-center text-sm mt-1">
+            <p className="text-gray-500 text-center text-sm mt-1">
               Sign up to manage your logistics
             </p>
           </CardHeader>
@@ -78,7 +78,7 @@ export default function Signup() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label htmlFor="name">Name</Label>
-                <Input
+                <Input className="my-1"
                   id="name"
                   type="text"
                   placeholder="Enter your name"
@@ -90,7 +90,7 @@ export default function Signup() {
 
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input
+                <Input className="my-1"
                   id="email"
                   type="email"
                   placeholder="Enter your email"
@@ -102,7 +102,7 @@ export default function Signup() {
 
               <div>
                 <Label htmlFor="password">Password</Label>
-                <Input
+                <Input className="my-1"
                   id="password"
                   type="password"
                   placeholder="Enter your password"
@@ -114,7 +114,7 @@ export default function Signup() {
 
               <div>
                 <Label htmlFor="contactNumber">Contact Number</Label>
-                <Input
+                <Input className="my-1"
                   id="contactNumber"
                   type="text"
                   placeholder="Enter your contact number"

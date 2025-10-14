@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { updateWarehouse } from "@/redux/slice/warehouseSlice"; 
+import { updateWarehouse } from "@/redux/slice/warehouseSlice";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -116,7 +116,7 @@ export default function AddUser({ onClose, onSuccess }) {
             {/* Name */}
             <div>
               <Label>Name</Label>
-              <Input
+              <Input className="my-1"
                 value={formData.name}
                 onChange={(e) => handleChange("name", e.target.value)}
                 placeholder="Enter name"
@@ -127,7 +127,7 @@ export default function AddUser({ onClose, onSuccess }) {
             {/* Email */}
             <div>
               <Label>Email</Label>
-              <Input
+              <Input className="my-1"
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleChange("email", e.target.value)}
@@ -139,7 +139,7 @@ export default function AddUser({ onClose, onSuccess }) {
             {/* Password */}
             <div>
               <Label>Password</Label>
-              <Input
+              <Input className="my-1"
                 type="password"
                 value={formData.password}
                 onChange={(e) => handleChange("password", e.target.value)}
@@ -151,7 +151,7 @@ export default function AddUser({ onClose, onSuccess }) {
             {/* Contact Number */}
             <div>
               <Label>Contact Number</Label>
-              <Input
+              <Input className="my-1"
                 value={formData.contactNumber}
                 onChange={(e) => handleChange("contactNumber", e.target.value)}
                 placeholder="Enter contact number"
@@ -161,45 +161,48 @@ export default function AddUser({ onClose, onSuccess }) {
             {/* Role */}
             <div>
               <Label>Role</Label>
-              <Select
-                value={formData.role}
-                onValueChange={(value) => handleChange("role", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Admin">Admin</SelectItem>
-                  <SelectItem value="Manager">Manager</SelectItem>
-                  <SelectItem value="WarehouseStaff">
-                    Warehouse Staff
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="my-1">
+                <Select
+                  value={formData.role}
+                  onValueChange={(value) => handleChange("role", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Admin">Admin</SelectItem>
+                    <SelectItem value="Manager">Manager</SelectItem>
+                    <SelectItem value="WarehouseStaff">
+                      Warehouse Staff
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Warehouse Dropdown */}
             {(formData.role === "Manager" ||
               formData.role === "WarehouseStaff") && (
-              <div>
-                <Label>Assign Warehouse</Label>
-                <Select
-                  value={formData.warehouse}
-                  onValueChange={(value) => handleChange("warehouse", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Warehouse" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {warehouses.map((wh) => (
-                      <SelectItem key={wh._id} value={wh._id}>
-                        {wh.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+                <div>
+                  <Label>Assign Warehouse</Label>
+                   <div className="my-1"></div>
+                  <Select
+                    value={formData.warehouse}
+                    onValueChange={(value) => handleChange("warehouse", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Warehouse" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {warehouses.map((wh) => (
+                        <SelectItem key={wh._id} value={wh._id}>
+                          {wh.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
             {/* Buttons */}
             <div className="flex justify-end gap-3">
