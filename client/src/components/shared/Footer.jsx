@@ -6,7 +6,7 @@ export default function Footer() {
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-6">
 
                 <div className="text-center md:text-left mb-2 md:mb-0">
-                    <h2 className="font-bold text-lg">Campus Express</h2>
+                    <h2 className="font-bold text-lg">ShipSense</h2>
                     <p className="text-sm text-[#E9B3FB]">Delivering with trust and speed</p>
                 </div>
 
@@ -25,7 +25,7 @@ export default function Footer() {
 
 
                 <div className="text-sm text-[#E9B3FB] mt-2 md:mt-0">
-                    © {new Date().getFullYear()} Your Logistics Company. All rights reserved.
+                    © {new Date().getFullYear()} ShipSense. All rights reserved.
                 </div>
             </div>
         </footer>

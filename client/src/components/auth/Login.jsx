@@ -48,7 +48,7 @@ export default function Login() {
             {/* Left banner section (hidden on small screens) */}
             <div className="hidden md:flex flex-col justify-between bg-[#3B0270] text-white w-1/2 p-6 relative">
                 <div className="absolute top-4 left-6">
-                    <img src="/logo.jpg" alt="Logo" className="h-10" />
+                    <img src="/logo.png" alt="Logo" className="h-10" />
                 </div>
                 <div className="flex items-center justify-center h-full">
                     <img
